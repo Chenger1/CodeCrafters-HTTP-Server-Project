@@ -14,11 +14,11 @@ fn main() {
         match stream {
             Ok(_stream) => {
                 let mut _stream = _stream;
-                println!("accepted new connection");
+                // println!("accepted new connection");
                 let buf_reader = BufReader::new(&_stream);
                 let http_request: Vec<_> = buf_reader.lines().map(|line| line.unwrap()).collect();
                 let path = path_resolver.get_path_from_request(&http_request);
-                let mut response = "";
+                let response;
                 if path_resolver.is_exists(&path) {
                     response = "HTTP/1.1 200 OK\r\n\r\n";
                 }else{
