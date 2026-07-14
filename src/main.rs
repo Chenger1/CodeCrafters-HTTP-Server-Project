@@ -21,7 +21,6 @@ fn main() {
                 let mut response = "";
                 if path_resolver.is_exists(&path) {
                     response = "HTTP/1.1 200 OK\r\n\r\n";
-                    _stream.write_all(response.as_bytes()).unwrap();
                 }else{
                     response = "HTTP/1.1 404 Not Found\r\n\r\n";
                 }
