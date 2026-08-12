@@ -1,10 +1,12 @@
 mod path_resolver;
 mod handlers;
+mod utils;
 
 use std::io::{BufRead, BufReader, Write};
 #[allow(unused_imports)]
 use std::net::TcpListener;
 use std::net::TcpStream;
+use crate::handlers::user_agent;
 
 fn collect_http_request(buf_reader: BufReader<&TcpStream>) -> Vec<String> {
     let mut http_request: Vec<String> = Vec::new();
@@ -23,6 +25,7 @@ fn handle_request(path: &String, http_request: &Vec<String>) -> String{
     match path.as_str(){
         "" => String::from("HTTP/1.1 200 OK\r\n\r\n"),
         "echo" => handlers::echo(http_request),
+        "user-agent" => user_agent(http_request),   
         _ => String::from("HTTP/1.1 404 Not Found\r\n\r\n")
     }
 }

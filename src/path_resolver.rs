@@ -7,7 +7,8 @@ impl Paths{
         Paths{
             paths: vec!{
                 "/".to_string(),
-                "/echo/{str}".to_string()
+                "/echo/{str}/".to_string(),
+                "/user-agent/".to_string(),
             }
         }
     }
