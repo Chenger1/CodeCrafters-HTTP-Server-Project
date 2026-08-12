@@ -18,6 +18,7 @@ pub fn user_agent(http_request: &Vec<String>) -> String {
         let data = header.split(":").collect::<Vec<&str>>();
         if data[0] == "User-Agent"{
             response.push_str(&format!("Content-Length: {}\r\n\r\n{}\r\n\r\n", data[1].len(), data[1]));
+            break;
         }
     }
 
