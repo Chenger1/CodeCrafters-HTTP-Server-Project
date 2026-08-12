@@ -1,4 +1,5 @@
 mod path_resolver;
+mod handlers;
 
 use std::io::{BufRead, BufReader, Write};
 #[allow(unused_imports)]
@@ -18,6 +19,14 @@ fn collect_http_request(buf_reader: BufReader<&TcpStream>) -> Vec<String> {
     http_request
 }
 
+fn handle_request(path: &String, http_request: &Vec<String>) -> String{
+    match path.as_str(){
+        "" => String::from("HTTP/1.1 200 OK\r\n\r\n"),
+        "echo" => handlers::echo(http_request),
+        _ => String::from("HTTP/1.1 404 Not Found\r\n\r\n")
+    }
+}
+
 fn main() -> std::io::Result<()> {
     let listener = TcpListener::bind("127.0.0.1:4221").unwrap();
     let path_resolver = path_resolver::Paths::new();
@@ -30,8 +39,10 @@ fn main() -> std::io::Result<()> {
                 let http_request = collect_http_request(buf_reader);
                 let path = path_resolver.get_path_from_request(&http_request);
                 let response;
+                let handler_response;
                 if path_resolver.is_exists(&path) {
-                    response = "HTTP/1.1 200 OK\r\n\r\n";
+                    handler_response = handle_request(&path, &http_request);
+                    response = handler_response.as_str();
                 }else{
                     response = "HTTP/1.1 404 Not Found\r\n\r\n";
                 }
@@ -41,6 +52,8 @@ fn main() -> std::io::Result<()> {
                 println!("error: {}", e);
             }
         }
+
+
     }
     Ok(())
 }
