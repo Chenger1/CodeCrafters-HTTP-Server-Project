@@ -1,4 +1,4 @@
-use crate::utils::{get_path_parameters, get_headers};
+use crate::utils::get_path_parameters;
 
 pub fn echo(http_request: &Vec<String>) -> String {
     let mut response = String::from("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n");
@@ -13,11 +13,11 @@ pub fn echo(http_request: &Vec<String>) -> String {
 
 pub fn user_agent(http_request: &Vec<String>) -> String {
     let mut response = String::from("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n");
-    let headers = get_headers(http_request);
-    for header in headers{
-        let data = header.split(":").collect::<Vec<&str>>();
-        if data[0] == "User-Agent"{
-            response.push_str(&format!("Content-Length: {}\r\n\r\n{}\r\n\r\n", data[1].len(), data[1]));
+    for line in http_request{
+        if line.contains("User-Agent") {
+            let data = line.split(":").collect::<Vec<&str>>();
+            let value = data[1].trim();
+            response.push_str(&format!("Content-Length: {}\r\n\r\n{}\r\n\r\n", value.len(), value));
             break;
         }
     }

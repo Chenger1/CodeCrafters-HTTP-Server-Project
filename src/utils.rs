@@ -3,10 +3,3 @@ pub fn get_path_parameters(http_request: &Vec<String>) -> Vec<&str> {
         .split("/")
         .collect::<Vec<&str>>()
 }
-
-
-pub fn get_headers(http_request: &Vec<String>) -> Vec<&str> {
-    http_request[1].split(" ").collect::<Vec<&str>>()[1]
-        .split("/")
-        .collect::<Vec<&str>>()
-}
